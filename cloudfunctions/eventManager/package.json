@@ -1,0 +1,9 @@
+{
+  "name": "eventManager",
+  "version": "1.0.0",
+  "description": "事件管理云函数 - 支持事件的创建、读取、更新、删除",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -1,0 +1,85 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="bg-glow glow-1"></view>
+  <view class="bg-glow glow-2"></view>
+
+  <block wx:if="{{phase === 'loading'}}">
+    <view class="loading-container">
+      <view class="loading-icon">
+        <text class="icon-music">♪</text>
+      </view>
+      <text class="loading-title">和弦之约</text>
+      <text class="loading-subtitle">Melody of Love</text>
+      <view class="loading-dots">
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+        <view class="loading-dot"></view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:if="{{phase === 'register'}}">
+    <scroll-view scroll-y class="register-container" style="padding-top: {{statusBarHeight + 20}}px;">
+      <view class="register-header">
+        <view class="header-icon">
+          <text class="icon-music-lg">♫</text>
+        </view>
+        <text class="register-title">欢迎来到和弦之约</text>
+        <text class="register-subtitle">请完善你的信息，开启属于你们的故事</text>
+      </view>
+
+      <view class="form-section">
+        <view class="avatar-section">
+          <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+            <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill"></image>
+            <view wx:else class="avatar-placeholder">
+              <text class="avatar-plus">+</text>
+              <text class="avatar-tip">选择头像</text>
+            </view>
+          </button>
+        </view>
+
+        <view class="input-group">
+          <text class="input-label">昵称</text>
+          <block wx:if="{{canIUseNicknameComp}}">
+            <input type="nickname" class="text-input" placeholder="请输入你的昵称" value="{{nickName}}" bind:input="onNicknameInput" bind:change="onNicknameChange" />
+          </block>
+          <block wx:else>
+            <input class="text-input" placeholder="请输入你的昵称" value="{{nickName}}" bind:input="onNicknameInput" maxlength="12" />
+          </block>
+        </view>
+
+        <view class="input-group">
+          <text class="input-label">身份</text>
+          <view class="role-selector">
+            <view class="role-option {{role === 'male' ? 'role-active' : ''}}" bindtap="selectRole" data-role="male">
+              <view class="role-icon role-male-icon">
+                <text>辰</text>
+              </view>
+              <text class="role-name">男方</text>
+            </view>
+            <view class="role-option {{role === 'female' ? 'role-active' : ''}}" bindtap="selectRole" data-role="female">
+              <view class="role-icon role-female-icon">
+                <text>念</text>
+              </view>
+              <text class="role-name">女方</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="submit-section">
+        <view class="submit-btn {{nickName.trim().length > 0 && role !== '' && !submitting ? '' : 'submit-disabled'}}" bindtap="handleRegister">
+          <text class="submit-text">{{submitting ? '注册中...' : '开始我们的故事'}}</text>
+        </view>
+        <text class="submit-tip">注册后将自动登录</text>
+      </view>
+
+      <view class="footer-decoration">
+        <view class="footer-line"></view>
+        <text class="footer-heart">❤</text>
+        <view class="footer-line"></view>
+      </view>
+    </scroll-view>
+  </block>
+</view>

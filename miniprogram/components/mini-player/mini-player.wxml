@@ -1,0 +1,31 @@
+<view class="mini-player {{isPlaying ? 'playing' : ''}}" wx:if="{{musicList.length > 0}}">
+  <view class="player-info" bindtap="togglePlay">
+    <view class="player-icon-wrap {{isPlaying ? 'rotating' : ''}}">
+      <text class="player-icon">♪</text>
+    </view>
+    <view class="player-text">
+      <text class="player-title">{{musicList[currentTrack].title || '未知歌曲'}}</text>
+      <text class="player-artist">{{musicList[currentTrack].artist || '未知艺术家'}}</text>
+    </view>
+  </view>
+  <view class="player-controls">
+    <view class="control-btn" bindtap="prevTrack">
+      <text class="control-icon">⏮</text>
+    </view>
+    <view class="play-btn" bindtap="togglePlay">
+      <text class="play-icon">{{isPlaying ? '⏸' : '▶'}}</text>
+    </view>
+    <view class="control-btn" bindtap="nextTrack">
+      <text class="control-icon">⏭</text>
+    </view>
+  </view>
+  <view class="progress-wrap">
+    <view class="progress-bar" bindtap="onProgressTap">
+      <view class="progress-fill" style="width: {{progress}}%"></view>
+    </view>
+    <view class="time-info">
+      <text class="time-text">{{currentTimeStr}}</text>
+      <text class="time-text">{{durationStr}}</text>
+    </view>
+  </view>
+</view>

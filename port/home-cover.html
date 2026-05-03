@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>封面页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink': '#0f1023',
+                        'ink-light': '#1a1a2e',
+                        'gold': '#C9A96E',
+                        'gold-light': '#d4b97a',
+                        'cream': '#FFF8F0',
+                        'rose': '#B76E79',
+                        'coral': '#FF6B6B',
+                        'lavender': '#9B8EC1',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0f1023; font-family: 'Georgia', 'Times New Roman', serif; width: 430px; height: 932px; overflow: hidden; }
+        .staff-line { height: 1px; background: rgba(201,169,110,0.15); }
+        .piano-key {
+            background: linear-gradient(180deg, #FFF8F0 0%, #e8ddd0 100%);
+            border-radius: 0 0 3px 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .piano-key-black {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f1023 100%);
+            border-radius: 0 0 2px 2px;
+            height: 60%;
+            width: 55%;
+            position: absolute;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+        .note-float {
+            animation: noteFloat 6s ease-in-out infinite;
+        }
+        @keyframes noteFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+        .gold-glow {
+            text-shadow: 0 0 20px rgba(201,169,110,0.3), 0 0 40px rgba(201,169,110,0.1);
+        }
+        .page-texture {
+            background-image: 
+                radial-gradient(ellipse at 20% 50%, rgba(201,169,110,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(155,142,193,0.03) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="page-texture relative">
+    <div class="absolute inset-0 flex flex-col">
+        <div class="flex-1 flex flex-col items-center justify-center px-8 relative">
+            <div class="absolute top-0 left-0 right-0 h-24" style="background: linear-gradient(180deg, rgba(15,16,35,0.8) 0%, transparent 100%);"></div>
+
+            <div class="relative z-10 flex flex-col items-center">
+                <div class="mb-6 flex items-center gap-2 opacity-40">
+                    <div class="w-1.5 h-1.5 rounded-full bg-gold"></div>
+                    <div class="w-12 h-[1px] bg-gold"></div>
+                    <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                    <div class="w-12 h-[1px] bg-gold"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-gold"></div>
+                </div>
+
+                <h1 class="text-gold text-4xl font-bold tracking-[12px] gold-glow mb-2" style="font-family: Georgia, serif;">和弦之约</h1>
+                <p class="text-gold-light text-xs tracking-[6px] opacity-60 uppercase" style="font-family: Georgia, serif;">Melody of Love</p>
+
+                <div class="my-10 flex items-center gap-3 opacity-30">
+                    <div class="w-16 h-[1px] bg-gold"></div>
+                    <div class="w-2 h-2 rounded-full border border-gold"></div>
+                    <div class="w-16 h-[1px] bg-gold"></div>
+                </div>
+
+                <div class="flex items-center gap-6 mb-8">
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-rose to-coral flex items-center justify-center text-cream text-lg font-bold shadow-lg shadow-rose/20">辰</div>
+                        <span class="text-cream/70 text-sm mt-2">陆之辰</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <svg class="w-8 h-8 text-gold opacity-60" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span class="text-gold/50 text-[10px] tracking-[3px] mt-1">FOREVER</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-lavender to-rose-gold flex items-center justify-center text-cream text-lg font-bold shadow-lg shadow-lavender/20">念</div>
+                        <span class="text-cream/70 text-sm mt-2">苏念念</span>
+                    </div>
+                </div>
+
+                <div class="mb-6 px-6 py-3 rounded-full border border-gold/20 bg-gold/5">
+                    <p class="text-gold/80 text-sm tracking-widest" style="font-family: Georgia, serif;">2024.02.14 — 永远</p>
+                </div>
+
+                <p class="text-cream/30 text-xs tracking-[4px]">OUR LOVE STORY</p>
+            </div>
+        </div>
+
+        <div class="relative h-40 mx-4 mb-4">
+            <div class="absolute bottom-0 left-0 right-0 h-28 flex items-end justify-center gap-[2px]">
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[65%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[60%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[65%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[60%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[65%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[65%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[60%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[65%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"><div class="piano-key-black left-[60%] top-0"></div></div>
+                <div class="piano-key w-7 h-24 relative"></div>
+                <div class="piano-key w-7 h-24 relative"></div>
+            </div>
+            <div class="absolute top-4 left-0 right-0 flex justify-center gap-2 note-float">
+                <span class="text-gold/30 text-2xl">♩</span>
+                <span class="text-gold/20 text-lg mt-4">♪</span>
+                <span class="text-gold/25 text-xl mt-1">♫</span>
+                <span class="text-gold/15 text-3xl">♬</span>
+                <span class="text-gold/20 text-lg mt-3">♩</span>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between px-4 py-3 bg-ink/80 border-t border-gold/10">
+            <button class="p-2 text-gold/40">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+            </button>
+            <div class="flex items-center gap-2">
+                <span class="text-gold text-sm font-medium">1</span>
+                <span class="text-gold/30 text-xs">/</span>
+                <span class="text-gold/30 text-sm">7</span>
+            </div>
+            <div class="flex items-center gap-1">
+                <button class="p-2 text-gold/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/></svg>
+                </button>
+                <button class="p-2 text-gold/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                </button>
+                <button class="p-2 text-gold/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

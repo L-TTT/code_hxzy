@@ -1,0 +1,16 @@
+<view class="note-card note-{{type}}" bindtap="onTap">
+  <view class="note-icon">
+    <text class="symbol">{{symbol}}</text>
+  </view>
+  <view class="card-content" wx:if="{{showContent}}">
+    <text class="title">{{event.title}}</text>
+    <text class="date">{{event.date}}</text>
+    <image 
+      class="photo" 
+      src="{{event.photos[0].url}}" 
+      mode="aspectFill" 
+      wx:if="{{event.photos && event.photos.length > 0}}"
+      bindtap="onPreviewPhoto"
+    ></image>
+  </view>
+</view>

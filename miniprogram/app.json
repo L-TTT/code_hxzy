@@ -1,12 +1,48 @@
 {
   "pages": [
+    "pages/login/login",
+    "pages/pair/pair",
+    "pages/home/home",
+    "pages/mine/mine",
+    "pages/bucket/bucket",
+    "pages/settings/settings",
+    "pages/event-detail/event-detail",
+    "pages/event-edit/event-edit",
     "pages/index/index",
     "pages/logs/logs"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "和弦之约",
+    "navigationBarBackgroundColor": "#0f1023",
+    "backgroundColor": "#0f1023",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "rgba(255,248,240,0.5)",
+    "selectedColor": "#C9A96E",
+    "backgroundColor": "#0f1023",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "画册",
+        "iconPath": "assets/icons/album.png",
+        "selectedIconPath": "assets/icons/album-active.png"
+      },
+      {
+        "pagePath": "pages/bucket/bucket",
+        "text": "心愿",
+        "iconPath": "assets/icons/bucket.png",
+        "selectedIconPath": "assets/icons/bucket-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "管理",
+        "iconPath": "assets/icons/manage.png",
+        "selectedIconPath": "assets/icons/manage-active.png"
+      }
+    ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",

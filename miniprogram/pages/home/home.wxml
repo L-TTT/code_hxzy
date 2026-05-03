@@ -1,0 +1,388 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px; padding-right: {{navBarRight}}px;">
+    <view class="nav-left">
+      <view class="nav-icon">
+        <text class="icon-music">♪</text>
+      </view>
+      <text class="nav-title">和弦之约</text>
+    </view>
+    <view class="nav-right">
+      <view class="activity-bell" bindtap="toggleActivityPanel" wx:if="{{unreadCount > 0}}">
+        <view class="bell-shape">
+          <view class="bell-top"></view>
+          <view class="bell-body"></view>
+          <view class="bell-clapper"></view>
+        </view>
+        <view class="unread-badge">
+          <text class="badge-text">{{unreadCount > 9 ? '9+' : unreadCount}}</text>
+        </view>
+      </view>
+      <view class="swiper-toggle {{swiperMode ? 'active' : ''}}" bindtap="toggleSwiperMode">
+        <text class="toggle-label">{{swiperMode ? '翻阅' : '画册'}}</text>
+      </view>
+      <view class="nav-action" bindtap="openSettings">
+        <view class="gear-icon">
+          <view class="gear-center"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <block wx:if="{{swiperMode}}">
+    <swiper class="page-flip-container" current="{{currentPage}}" bindchange="onPageChange" duration="{{flipDuration}}" easing-function="easeInOutCubic" style="flex:1;">
+      <swiper-item wx:for="{{pages}}" wx:key="index">
+        <view class="slide {{index === currentPage ? 'active-slide' : ''}}">
+          <scroll-view scroll-y class="content-area">
+            <block wx:if="{{item.type === 'cover'}}">
+              <view class="cover-content">
+                <view class="decorative-dots">
+                  <view class="dot"></view>
+                  <view class="line"></view>
+                  <text class="icon-music-sm">♫</text>
+                  <view class="line"></view>
+                  <view class="dot"></view>
+                </view>
+
+                <text class="cover-title">和弦之约</text>
+                <text class="cover-subtitle">Melody of Love</text>
+
+                <view class="divider">
+                  <view class="divider-line"></view>
+                  <view class="divider-dot"></view>
+                  <view class="divider-line"></view>
+                </view>
+
+                <view class="couple-section">
+                  <view class="person">
+                    <view class="avatar avatar-male">
+                      <text class="avatar-text">{{coupleInfo.partner1.nickname}}</text>
+                    </view>
+                    <text class="person-name">{{coupleInfo.partner1.name}}</text>
+                  </view>
+                  <view class="heart-section">
+                    <text class="heart-icon">❤</text>
+                    <text class="forever-text">FOREVER</text>
+                  </view>
+                  <view class="person">
+                    <view class="avatar avatar-female">
+                      <text class="avatar-text">{{coupleInfo.partner2.nickname}}</text>
+                    </view>
+                    <text class="person-name">{{coupleInfo.partner2.name}}</text>
+                  </view>
+                </view>
+
+                <view class="date-badge">
+                  <text class="date-text">{{startDate}} — 永远</text>
+                </view>
+
+                <text class="our-story">OUR LOVE STORY</text>
+              </view>
+            </block>
+
+            <block wx:if="{{item.type === 'stats'}}">
+              <view class="cover-content">
+                <view class="decorative-dots">
+                  <view class="dot"></view>
+                  <view class="line"></view>
+                  <text class="icon-music-sm">♫</text>
+                  <view class="line"></view>
+                  <view class="dot"></view>
+                </view>
+
+                <text class="back-subtitle">Our Story So Far</text>
+
+                <view class="stats-row">
+                  <view class="stat-card">
+                    <text class="stat-number">{{daysTogether}}</text>
+                    <text class="stat-label">相恋天数</text>
+                  </view>
+                  <view class="stat-card">
+                    <text class="stat-number">{{events.length}}</text>
+                    <text class="stat-label">回忆篇章</text>
+                  </view>
+                </view>
+
+                <view class="closing-words">
+                  <text class="closing-text">所有的故事都值得被铭记</text>
+                  <text class="closing-text">所有的旋律都因你而动听</text>
+                  <text class="closing-text">愿我们的乐章，永远悠扬</text>
+                </view>
+
+                <view class="heart-divider">
+                  <view class="heart-line"></view>
+                  <text class="heart-icon-lg">❤</text>
+                  <view class="heart-line"></view>
+                </view>
+
+                <text class="ending-text">— 未完待续 —</text>
+              </view>
+            </block>
+
+            <block wx:if="{{item.type === 'event'}}">
+              <view class="staff-lines" wx:if="{{staffStyle === '五线谱'}}">
+                <view class="staff-line" wx:for="{{5}}" wx:for-item="si" wx:key="index"></view>
+                <view class="staff-gap"></view>
+                <view class="staff-line" wx:for="{{5}}" wx:for-item="si" wx:key="index"></view>
+              </view>
+              <view class="staff-lines staff-jianpu" wx:if="{{staffStyle === '简谱'}}">
+                <view class="staff-dot" wx:for="{{7}}" wx:for-item="sd" wx:key="index"></view>
+              </view>
+
+              <view class="event-content">
+                <view class="event-header">
+                  <view class="event-type-indicator type-{{item.data.type}}"></view>
+                  <view class="event-title-section">
+                    <text class="event-title">{{item.data.title}}</text>
+                    <view class="event-meta">
+                      <text class="bpm-text">♩ = 72 BPM</text>
+                      <text class="meta-divider">|</text>
+                      <text class="type-tag type-{{item.data.type}}">
+                        <block wx:if="{{item.data.type === 'birthday'}}">🎂 生日</block>
+                        <block wx:elif="{{item.data.type === 'anniversary'}}">💕 纪念日</block>
+                        <block wx:else>🌿 日常</block>
+                      </text>
+                    </view>
+                  </view>
+                </view>
+
+                <block wx:if="{{item.data.photos && item.data.photos.length > 0}}">
+                  <view class="photos-grid">
+                    <view class="photo-card {{item.data.photos.length === 1 ? 'photo-full' : 'photo-large'}}" bindtap="previewPhoto" data-url="{{item.data.photos[0].url || item.data.photos[0].fileId}}">
+                      <image wx:if="{{item.data.photos[0].url || item.data.photos[0].fileId}}" src="{{item.data.photos[0].url || item.data.photos[0].fileId}}" mode="aspectFill" class="photo-img" lazy-load />
+                      <view wx:else class="photo-placeholder type-{{item.data.type}}-bg">
+                        <text class="photo-emoji">📷</text>
+                        <text class="photo-label">照片 1</text>
+                      </view>
+                      <view class="photo-caption" wx:if="{{item.data.photos[0].caption}}">
+                        <text class="caption-text">{{item.data.photos[0].caption}}</text>
+                      </view>
+                    </view>
+                    <block wx:if="{{item.data.photos.length > 1}}">
+                      <view class="photo-card photo-large" bindtap="previewPhoto" data-url="{{item.data.photos[1].url || item.data.photos[1].fileId}}">
+                        <image wx:if="{{item.data.photos[1].url || item.data.photos[1].fileId}}" src="{{item.data.photos[1].url || item.data.photos[1].fileId}}" mode="aspectFill" class="photo-img" lazy-load />
+                        <view wx:else class="photo-placeholder type-{{item.data.type}}-bg-2">
+                          <text class="photo-emoji">📷</text>
+                          <text class="photo-label">照片 2</text>
+                        </view>
+                        <view class="photo-caption" wx:if="{{item.data.photos[1].caption}}">
+                          <text class="caption-text">{{item.data.photos[1].caption}}</text>
+                        </view>
+                      </view>
+                    </block>
+                  </view>
+
+                  <view class="photos-grid" wx:if="{{item.data.photos.length > 2}}">
+                    <view class="photo-card photo-half" wx:for="{{item.data.photos}}" wx:for-item="photo" wx:for-index="pi" wx:key="index" wx:if="{{pi >= 2 && pi < 4}}">
+                      <image wx:if="{{photo.url || photo.fileId}}" src="{{photo.url || photo.fileId}}" mode="aspectFill" class="photo-img" lazy-load />
+                      <view wx:else class="photo-placeholder type-{{item.data.type}}-bg-3">
+                        <text class="photo-emoji">📷</text>
+                      </view>
+                    </view>
+                  </view>
+
+                  <view class="photo-count" wx:if="{{item.data.photos.length > 4}}">
+                    <text class="count-text">共 {{item.data.photos.length}} 张照片</text>
+                  </view>
+                </block>
+
+                <block wx:if="{{!item.data.photos || item.data.photos.length === 0}}">
+                  <view class="photos-grid">
+                    <view class="photo-card photo-full">
+                      <view class="photo-placeholder type-{{item.data.type}}-bg">
+                        <text class="photo-emoji">📷</text>
+                        <text class="photo-label">暂无照片</text>
+                      </view>
+                    </view>
+                  </view>
+                </block>
+
+                <block wx:if="{{item.data.description}}">
+                  <view class="note-content">
+                    <view class="note-icon-section">
+                      <view class="note-head type-{{item.data.type}}"></view>
+                      <view class="note-stem type-{{item.data.type}}"></view>
+                    </view>
+                    <view class="note-text-box">
+                      <text class="note-text">{{item.data.description}}</text>
+                    </view>
+                  </view>
+                </block>
+
+                <view class="info-tags" wx:if="{{item.data.location}}">
+                  <view class="info-tag">
+                    <text class="tag-icon">📍</text>
+                    <text class="tag-text">{{item.data.location}}</text>
+                  </view>
+                </view>
+
+                <block wx:if="{{item.data.music && item.data.music.title}}">
+                  <view class="music-player" bindtap="toggleMusic">
+                    <view class="player-left">
+                      <text class="player-icon">♪</text>
+                      <text class="player-title">{{item.data.music.title}}</text>
+                    </view>
+                    <view class="player-right">
+                      <view class="progress-bar">
+                        <view class="progress-fill type-{{item.data.type}}" style="width: {{isPlaying ? musicProgress : 0}}%"></view>
+                      </view>
+                      <text class="play-btn">{{isPlaying ? '⏸' : '▶'}}</text>
+                    </view>
+                  </view>
+                </block>
+              </view>
+
+              <view class="side-notes">
+                <text class="side-note">♩</text>
+                <view class="side-line"></view>
+                <text class="side-note">♪</text>
+                <view class="side-line"></view>
+                <text class="side-note">♫</text>
+                <view class="side-line"></view>
+                <text class="side-note">♬</text>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </block>
+
+  <block wx:if="{{!swiperMode}}">
+    <scroll-view scroll-y class="content-area" style="flex:1;">
+      <view class="cover-content">
+        <view class="decorative-dots">
+          <view class="dot"></view>
+          <view class="line"></view>
+          <text class="icon-music-sm">♫</text>
+          <view class="line"></view>
+          <view class="dot"></view>
+        </view>
+
+        <text class="cover-title">和弦之约</text>
+        <text class="cover-subtitle">Melody of Love</text>
+
+        <view class="divider">
+          <view class="divider-line"></view>
+          <view class="divider-dot"></view>
+          <view class="divider-line"></view>
+        </view>
+
+        <view class="couple-section">
+          <view class="person">
+            <view class="avatar avatar-male">
+              <text class="avatar-text">{{coupleInfo.partner1.nickname}}</text>
+            </view>
+            <text class="person-name">{{coupleInfo.partner1.name}}</text>
+          </view>
+          <view class="heart-section">
+            <text class="heart-icon">❤</text>
+            <text class="forever-text">FOREVER</text>
+          </view>
+          <view class="person">
+            <view class="avatar avatar-female">
+              <text class="avatar-text">{{coupleInfo.partner2.nickname}}</text>
+            </view>
+            <text class="person-name">{{coupleInfo.partner2.name}}</text>
+          </view>
+        </view>
+
+        <view class="date-badge">
+          <text class="date-text">{{startDate}} — 永远</text>
+        </view>
+
+        <text class="our-story">OUR LOVE STORY</text>
+      </view>
+
+      <view class="piano-section">
+        <view class="piano-notes">
+          <text class="note note-1">♩</text>
+          <text class="note note-2">♪</text>
+          <text class="note note-3">♫</text>
+          <text class="note note-4">♬</text>
+          <text class="note note-5">♩</text>
+        </view>
+        <view class="piano-keys">
+          <view class="piano-key" wx:for="{{14}}" wx:for-item="ki" wx:key="index">
+            <view class="black-key" wx:if="{{ki === 0 || ki === 1 || ki === 3 || ki === 4 || ki === 5 || ki === 7 || ki === 8 || ki === 10 || ki === 11}}"></view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </block>
+
+  <view class="bottom-bar">
+    <view class="bottom-left" wx:if="{{swiperMode}}">
+      <view class="page-btn" bindtap="prevPage">
+        <text class="btn-icon">‹</text>
+      </view>
+    </view>
+    <view class="page-indicator" bindtap="{{swiperMode ? 'showPageJumpModal' : ''}}">
+      <block wx:if="{{swiperMode}}">
+        <text class="current-page">{{currentPage + 1}}</text>
+        <text class="page-divider">/</text>
+        <text class="total-pages">{{totalPages}}</text>
+      </block>
+      <block wx:else>
+        <text class="current-page">{{daysTogether}}</text>
+        <text class="page-divider">天</text>
+      </block>
+    </view>
+    <view class="bottom-right" wx:if="{{swiperMode}}">
+      <view class="page-btn" bindtap="nextPage">
+        <text class="btn-icon">›</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="modal-mask" wx:if="{{showPageJump}}" bindtap="hidePageJumpModal">
+    <view class="modal-box" catchtap="">
+      <view class="modal-header">
+        <text class="modal-title">快速跳转</text>
+        <view class="modal-close" bindtap="hidePageJumpModal">
+          <text class="close-icon">✕</text>
+        </view>
+      </view>
+      <view class="modal-body">
+        <view class="form-group">
+          <text class="form-label">输入页码（1-{{totalPages}}）</text>
+          <input class="form-input" type="number" value="{{jumpPage}}" bindinput="onJumpPageInput" placeholder="输入页码" />
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn-cancel" bindtap="hidePageJumpModal">
+          <text class="btn-text">取消</text>
+        </view>
+        <view class="btn-confirm" bindtap="confirmJumpPage">
+          <text class="btn-text">跳转</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="activity-mask" wx:if="{{showActivityPanel}}" bindtap="closeActivityPanel">
+    <view class="activity-panel" catchtap="">
+      <view class="activity-header">
+        <text class="activity-title">伴侣动态</text>
+        <view class="activity-close" bindtap="closeActivityPanel">
+          <text class="close-icon">✕</text>
+        </view>
+      </view>
+      <scroll-view scroll-y class="activity-list">
+        <view wx:if="{{partnerActivities.length === 0}}" class="activity-empty">
+          <text class="empty-text">暂无新动态</text>
+        </view>
+        <view class="activity-item" wx:for="{{partnerActivities}}" wx:key="index">
+          <view class="activity-dot"></view>
+          <view class="activity-info">
+            <text class="activity-desc">{{item.actionText}}「{{item.eventTitle}}」</text>
+            <text class="activity-time">{{item.timeText}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <canvas type="2d" id="posterCanvas" style="position:fixed;left:-9999px;top:-9999px;width:750px;height:1334px;" />
+  <canvas type="2d" id="pdfCanvas" style="position:fixed;left:-9999px;top:-9999px;width:750px;height:1334px;" />
+</view>

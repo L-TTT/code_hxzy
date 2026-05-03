@@ -1,0 +1,9 @@
+{
+  "name": "uploadManager",
+  "version": "1.0.0",
+  "description": "媒体上传云函数 - 支持图片、音频等文件上传到云存储",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

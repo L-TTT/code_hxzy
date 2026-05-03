@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>封底页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink': '#0f1023',
+                        'ink-light': '#1a1a2e',
+                        'gold': '#C9A96E',
+                        'gold-light': '#d4b97a',
+                        'cream': '#FFF8F0',
+                        'rose': '#B76E79',
+                        'coral': '#FF6B6B',
+                        'lavender': '#9B8EC1',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0f1023; font-family: 'Georgia', 'Times New Roman', serif; width: 430px; height: 932px; overflow: hidden; }
+        .gold-glow {
+            text-shadow: 0 0 20px rgba(201,169,110,0.3), 0 0 40px rgba(201,169,110,0.1);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(26,26,46,0.6), rgba(15,16,35,0.8));
+            border: 1px solid rgba(201,169,110,0.15);
+            backdrop-filter: blur(10px);
+        }
+        .page-texture {
+            background-image: 
+                radial-gradient(ellipse at 30% 70%, rgba(201,169,110,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(155,142,193,0.03) 0%, transparent 50%);
+        }
+        .fade-in {
+            animation: fadeIn 3s ease-in-out infinite alternate;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="page-texture relative">
+    <div class="absolute inset-0 flex flex-col items-center justify-center px-8">
+        <div class="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-gold/5 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-gold/5 to-transparent"></div>
+
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="mb-8 flex items-center gap-2 opacity-40">
+                <div class="w-1.5 h-1.5 rounded-full bg-gold"></div>
+                <div class="w-16 h-[1px] bg-gold"></div>
+                <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                <div class="w-16 h-[1px] bg-gold"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-gold"></div>
+            </div>
+
+            <p class="text-gold/50 text-xs tracking-[6px] uppercase mb-4" style="font-family: Georgia, serif;">Our Story So Far</p>
+
+            <div class="flex gap-6 mb-10">
+                <div class="stat-card rounded-2xl px-5 py-4 text-center">
+                    <p class="text-gold text-3xl font-bold gold-glow mb-1" id="days" style="font-family: Georgia, serif;">838</p>
+                    <p class="text-cream/40 text-xs tracking-widest">相恋天数</p>
+                </div>
+                <div class="stat-card rounded-2xl px-5 py-4 text-center">
+                    <p class="text-gold text-3xl font-bold gold-glow mb-1" style="font-family: Georgia, serif;">47</p>
+                    <p class="text-cream/40 text-xs tracking-widest">回忆篇章</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mb-10">
+                <div class="stat-card rounded-xl px-4 py-3 text-center flex-1">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <svg class="w-4 h-4 text-coral" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span class="text-cream/60 text-lg font-bold">520</span>
+                    </div>
+                    <p class="text-cream/30 text-[10px]">张照片</p>
+                </div>
+                <div class="stat-card rounded-xl px-4 py-3 text-center flex-1">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <svg class="w-4 h-4 text-lavender" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                        <span class="text-cream/60 text-lg font-bold">23</span>
+                    </div>
+                    <p class="text-cream/30 text-[10px]">首歌曲</p>
+                </div>
+                <div class="stat-card rounded-xl px-4 py-3 text-center flex-1">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+                        <span class="text-cream/60 text-lg font-bold">12</span>
+                    </div>
+                    <p class="text-cream/30 text-[10px]">个城市</p>
+                </div>
+            </div>
+
+            <div class="mb-8 px-4">
+                <p class="text-cream/60 text-center text-sm leading-loose tracking-wide" style="font-family: Georgia, serif;">
+                    所有的故事都值得被铭记<br>
+                    所有的旋律都因你而动听<br>
+                    愿我们的乐章，永远悠扬
+                </p>
+            </div>
+
+            <div class="flex items-center gap-3 opacity-40 mb-4">
+                <div class="w-12 h-[1px] bg-gold"></div>
+                <svg class="w-5 h-5 text-gold fade-in" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <div class="w-12 h-[1px] bg-gold"></div>
+            </div>
+
+            <p class="text-gold/30 text-xs tracking-[4px]" style="font-family: Georgia, serif;">— 未完待续 —</p>
+        </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-ink/80 border-t border-gold/10">
+        <button class="p-2 text-gold/40">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        </button>
+        <div class="flex items-center gap-2">
+            <span class="text-gold/30 text-sm">6</span>
+            <span class="text-gold/30 text-xs">/</span>
+            <span class="text-gold text-sm font-medium">7</span>
+        </div>
+        <button class="p-2 text-gold/40">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </button>
+    </div>
+</body>
+</html>

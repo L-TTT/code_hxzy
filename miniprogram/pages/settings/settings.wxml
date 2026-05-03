@@ -1,0 +1,351 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-left">
+      <view class="nav-icon">
+        <text class="icon-music">♪</text>
+      </view>
+      <text class="nav-title">设置</text>
+    </view>
+    <view class="nav-right" bindtap="goBack">
+      <text class="close-icon">✕</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="settings-content" style="height: {{scrollHeight}}px;">
+    <view class="section">
+      <text class="section-title">情侣信息</text>
+      <view class="couple-form">
+        <view class="couple-row">
+          <view class="couple-input-group">
+            <text class="couple-label">TA</text>
+            <input class="couple-input" placeholder="姓名" value="{{partner1Name}}" bindinput="onPartner1NameInput" />
+            <input class="couple-input" placeholder="昵称" value="{{partner1Nickname}}" bindinput="onPartner1NicknameInput" />
+          </view>
+          <view class="couple-heart">❤</view>
+          <view class="couple-input-group">
+            <text class="couple-label">TA</text>
+            <input class="couple-input" placeholder="姓名" value="{{partner2Name}}" bindinput="onPartner2NameInput" />
+            <input class="couple-input" placeholder="昵称" value="{{partner2Nickname}}" bindinput="onPartner2NicknameInput" />
+          </view>
+        </view>
+        <view class="couple-date-row">
+          <text class="couple-label">在一起的日子</text>
+          <picker mode="date" value="{{startDate}}" bindchange="onStartDateChange">
+            <view class="couple-date-picker">
+              <text class="couple-date-text">{{startDate}}</text>
+              <text class="arrow-icon">›</text>
+            </view>
+          </picker>
+        </view>
+        <view class="couple-save-btn" bindtap="saveCoupleInfo">
+          <text class="couple-save-text">保存情侣信息</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">情侣空间</text>
+      <view class="menu-list">
+        <view class="menu-item" bindtap="goToPair">
+          <view class="menu-left">
+            <view class="menu-icon icon-rose">
+              <view class="css-heart"></view>
+            </view>
+            <text class="menu-text">{{coupleId ? '已配对 · 管理情侣空间' : '创建或加入情侣空间'}}</text>
+          </view>
+          <view class="menu-right">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">主题风格</text>
+      <scroll-view scroll-x class="theme-scroll" enhanced show-scrollbar="{{false}}">
+        <view class="theme-grid">
+          <view class="theme-card {{activeTheme === 'ink' ? 'active' : ''}}" bindtap="setTheme" data-theme="ink">
+            <view class="theme-preview theme-ink">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">经典墨蓝</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'ink'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'lavender' ? 'active' : ''}}" bindtap="setTheme" data-theme="lavender">
+            <view class="theme-preview theme-lavender">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">薰衣草梦</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'lavender'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'forest' ? 'active' : ''}}" bindtap="setTheme" data-theme="forest">
+            <view class="theme-preview theme-forest">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">森林暮色</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'forest'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'rose' ? 'active' : ''}}" bindtap="setTheme" data-theme="rose">
+            <view class="theme-preview theme-rose">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">玫瑰之夜</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'rose'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'ocean' ? 'active' : ''}}" bindtap="setTheme" data-theme="ocean">
+            <view class="theme-preview theme-ocean">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">深海蔚蓝</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'ocean'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'sunset' ? 'active' : ''}}" bindtap="setTheme" data-theme="sunset">
+            <view class="theme-preview theme-sunset">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">落日余晖</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'sunset'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'cherry' ? 'active' : ''}}" bindtap="setTheme" data-theme="cherry">
+            <view class="theme-preview theme-cherry">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">樱花物语</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'cherry'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'night' ? 'active' : ''}}" bindtap="setTheme" data-theme="night">
+            <view class="theme-preview theme-night">
+              <view class="theme-border"></view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">星空夜语</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'night'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="theme-card {{activeTheme === 'custom' ? 'active' : ''}}" bindtap="chooseCustomBg">
+            <view class="theme-preview theme-custom-preview">
+              <image wx:if="{{customBgPath}}" src="{{customBgPath}}" mode="aspectFill" class="custom-bg-thumb"></image>
+              <view wx:else class="custom-add-icon">
+                <view class="custom-plus-h"></view>
+                <view class="custom-plus-v"></view>
+              </view>
+              <view class="theme-glow"></view>
+            </view>
+            <view class="theme-info">
+              <text class="theme-name">{{customBgPath ? '自定义' : '选择图片'}}</text>
+              <view class="theme-check" wx:if="{{activeTheme === 'custom'}}">
+                <text class="check-icon">✓</text>
+                <text class="check-text">当前</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">乐谱设置</text>
+      <view class="menu-list">
+        <view class="menu-item" bindtap="openStaffStyle">
+          <view class="menu-left">
+            <view class="menu-icon icon-gold">
+              <text class="icon-text">♪</text>
+            </view>
+            <text class="menu-text">谱线样式</text>
+          </view>
+          <view class="menu-right">
+            <text class="menu-value">{{staffStyle}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+
+        <view class="menu-item">
+          <view class="menu-left">
+            <view class="menu-icon icon-rose">
+              <view class="css-timer"></view>
+            </view>
+            <text class="menu-text">自动播放翻页</text>
+          </view>
+          <view class="menu-right">
+            <view class="toggle {{autoPlay ? 'on' : ''}}" bindtap="toggleAutoPlay">
+              <view class="toggle-dot"></view>
+            </view>
+          </view>
+        </view>
+
+        <view class="menu-item">
+          <view class="menu-left">
+            <view class="menu-icon icon-lavender">
+              <view class="css-speaker"></view>
+            </view>
+            <text class="menu-text">背景音乐</text>
+          </view>
+          <view class="menu-right">
+            <view class="toggle {{bgMusic ? 'on' : ''}}" bindtap="toggleBgMusic">
+              <view class="toggle-dot"></view>
+            </view>
+          </view>
+        </view>
+
+        <view class="menu-item">
+          <view class="menu-left">
+            <view class="menu-icon icon-coral">
+              <view class="css-book"></view>
+            </view>
+            <text class="menu-text">画册翻阅模式</text>
+          </view>
+          <view class="menu-right">
+            <view class="toggle {{swiperMode ? 'on' : ''}}" bindtap="toggleSwiperMode">
+              <view class="toggle-dot"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">数据管理</text>
+      <view class="menu-list">
+        <view class="menu-item" bindtap="backupData">
+          <view class="menu-left">
+            <view class="menu-icon icon-coral">
+              <text class="icon-text">↑</text>
+            </view>
+            <text class="menu-text">备份与恢复</text>
+          </view>
+          <view class="menu-right">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+
+        <view class="menu-item" bindtap="exportPdf">
+          <view class="menu-left">
+            <view class="menu-icon icon-gold">
+              <text class="icon-text">↓</text>
+            </view>
+            <text class="menu-text">导出 PDF 画册</text>
+          </view>
+          <view class="menu-right">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+
+        <view class="menu-item" bindtap="clearCache">
+          <view class="menu-left">
+            <view class="menu-icon icon-lavender">
+              <view class="css-trash"></view>
+            </view>
+            <text class="menu-text">清除缓存</text>
+          </view>
+          <view class="menu-right">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">更多</text>
+      <view class="menu-list">
+        <view class="menu-item" bindtap="openAbout">
+          <view class="menu-left">
+            <view class="menu-icon icon-cream">
+              <text class="icon-text">ℹ</text>
+            </view>
+            <text class="menu-text">关于我们</text>
+          </view>
+          <view class="menu-right">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+
+        <view class="menu-item" bindtap="openHelp">
+          <view class="menu-left">
+            <view class="menu-icon icon-cream">
+              <text class="icon-text">?</text>
+            </view>
+            <text class="menu-text">帮助中心</text>
+          </view>
+          <view class="menu-right">
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+
+        <button class="menu-item share-btn" open-type="share">
+          <view class="menu-left">
+            <view class="menu-icon icon-cream">
+              <text class="icon-text">↗</text>
+            </view>
+            <text class="menu-text">分享给朋友</text>
+          </view>
+          <view class="menu-right">
+            <text class="arrow-icon">›</text>
+          </view>
+        </button>
+      </view>
+    </view>
+
+    <view class="footer">
+      <view class="footer-icon">
+        <text class="footer-music">♪</text>
+      </view>
+      <text class="footer-title">和弦之约 v1.0.0</text>
+      <text class="footer-subtitle">Made with ♡</text>
+    </view>
+  </scroll-view>
+</view>

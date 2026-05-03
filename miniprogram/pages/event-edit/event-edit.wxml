@@ -1,0 +1,105 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-left">
+      <view class="nav-icon">
+        <text class="icon-music">♪</text>
+      </view>
+      <text class="nav-title">{{isEdit ? '编辑事件' : '新建事件'}}</text>
+    </view>
+    <view class="nav-right" bindtap="goBack">
+      <text class="close-icon">✕</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="form-scroll" style="height: {{scrollHeight}}px;">
+    <view class="form-content">
+      <view class="save-bar">
+        <view class="save-btn {{submitting ? 'disabled' : ''}}" bindtap="saveEvent">
+          <text class="save-text">{{submitting ? '保存中...' : '保存'}}</text>
+        </view>
+      </view>
+
+      <view class="form-section">
+        <text class="section-label">事件标题 *</text>
+        <input class="form-input" placeholder="输入事件标题" placeholder-class="placeholder" value="{{title}}" bindinput="onTitleInput" maxlength="50" />
+      </view>
+
+      <view class="form-section">
+        <text class="section-label">日期 *</text>
+        <picker mode="date" value="{{date}}" bindchange="onDateChange">
+          <view class="picker-display">
+            <text class="{{date ? '' : 'placeholder'}}">{{date || '选择日期'}}</text>
+            <text class="picker-icon">📅</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-section">
+        <text class="section-label">事件类型</text>
+        <view class="type-grid">
+          <view class="type-item {{type === item.value ? 'active' : ''}}" wx:for="{{typeOptions}}" wx:key="value" bindtap="onTypeSelect" data-value="{{item.value}}">
+            <text class="type-emoji">{{item.emoji}}</text>
+            <text class="type-name">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-section">
+        <text class="section-label">事件描述</text>
+        <textarea class="form-textarea" placeholder="记录这个特别的时刻..." placeholder-class="placeholder" value="{{description}}" bindinput="onDescInput" maxlength="500" auto-height />
+        <text class="char-count">{{description.length}}/500</text>
+      </view>
+
+      <view class="form-section">
+        <text class="section-label">照片 ({{photos.length}}/9)</text>
+        <view class="photo-grid">
+          <view class="photo-item" wx:for="{{photos}}" wx:key="index">
+            <image class="photo-thumb" src="{{item.tempFilePath || item.fileId}}" mode="aspectFill" />
+            <view class="photo-overlay" wx:if="{{item.uploading}}">
+              <view class="upload-spinner"></view>
+            </view>
+            <view class="photo-delete" catchtap="deletePhoto" data-index="{{index}}">
+              <text class="delete-icon">×</text>
+            </view>
+            <input class="photo-desc-input" placeholder="添加描述" placeholder-class="photo-desc-placeholder" value="{{item.description}}" bindinput="onPhotoDescInput" data-index="{{index}}" />
+          </view>
+          <view class="photo-add" bindtap="choosePhoto" wx:if="{{photos.length < 9}}">
+            <text class="add-icon">+</text>
+            <text class="add-text">添加照片</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-section">
+        <text class="section-label">音乐信息</text>
+        <input class="form-input" placeholder="歌曲名称" placeholder-class="placeholder" value="{{musicTitle}}" bindinput="onMusicTitleInput" />
+        <view class="music-file-row mt-16">
+          <view class="music-file-btn" bindtap="chooseMusicFile">
+            <text class="music-file-icon">🎵</text>
+            <text class="music-file-text">{{musicUploading ? '上传中...' : (musicFileName || '选择音乐文件')}}</text>
+          </view>
+          <view class="music-play-btn" wx:if="{{musicUrl}}" bindtap="previewMusic">
+            <text class="music-play-icon">{{musicPlaying ? '⏸' : '▶'}}</text>
+          </view>
+          <view class="music-remove-btn" wx:if="{{musicUrl}}" bindtap="removeMusicFile">
+            <text class="music-remove-icon">×</text>
+          </view>
+        </view>
+        <input class="form-input mt-16" placeholder="或手动输入音乐链接" placeholder-class="placeholder" value="{{musicUrl}}" bindinput="onMusicUrlInput" />
+      </view>
+
+      <view class="form-section">
+        <text class="section-label">地点</text>
+        <view class="location-row">
+          <input class="form-input flex-1" placeholder="地点名称" placeholder-class="placeholder" value="{{locationName}}" bindinput="onLocationInput" />
+          <view class="location-btn" bindtap="chooseLocation">
+            <text class="location-icon">📍</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-bottom"></view>
+    </view>
+  </scroll-view>
+</view>

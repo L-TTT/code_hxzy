@@ -1,0 +1,152 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-left">
+      <view class="nav-icon">
+        <text class="icon-music">♪</text>
+      </view>
+      <text class="nav-title">回忆管理</text>
+    </view>
+  </view>
+
+  <view class="filter-bar" style="padding-right: {{navBarRight}}px;">
+    <view class="filter-tags">
+      <view class="filter-tag {{activeFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">
+        <view class="filter-bars">
+          <view class="bar"></view>
+          <view class="bar"></view>
+          <view class="bar"></view>
+        </view>
+        <text class="filter-text">全部事件</text>
+      </view>
+      <view class="filter-tag {{activeFilter === 'birthday' ? 'active' : ''}}" bindtap="setFilter" data-filter="birthday">
+        <view class="dot dot-birthday"></view>
+        <text class="filter-text">生日</text>
+      </view>
+      <view class="filter-tag {{activeFilter === 'anniversary' ? 'active' : ''}}" bindtap="setFilter" data-filter="anniversary">
+        <view class="dot dot-anniversary"></view>
+        <text class="filter-text">纪念日</text>
+      </view>
+      <view class="filter-tag {{activeFilter === 'daily' ? 'active' : ''}}" bindtap="setFilter" data-filter="daily">
+        <view class="dot dot-daily"></view>
+        <text class="filter-text">日常</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="timeline-area">
+    <view class="timeline">
+      <view class="timeline-line"></view>
+
+      <view class="timeline-item" wx:for="{{filteredEvents}}" wx:key="_id">
+        <view class="timeline-dot {{item.type === 'birthday' ? 'dot-birthday' : item.type === 'anniversary' ? 'dot-anniversary' : 'dot-daily'}}">
+          <view class="dot-inner"></view>
+        </view>
+        <view class="timeline-content">
+          <view class="year-label" wx:if="{{item.showYear}}">
+            <text class="year-text">{{item.year}}</text>
+          </view>
+          <view class="event-card" bindtap="goToDetail" data-id="{{item._id}}">
+            <view class="event-header">
+              <view class="event-info">
+                <view class="event-tag {{item.type}}">
+                  <text class="tag-emoji">{{item.tagEmoji}}</text>
+                  <text class="tag-text">{{item.tagName}}</text>
+                </view>
+                <text class="event-title">{{item.title}}</text>
+              </view>
+              <view class="more-btn" catchtap="showEventMenu" data-id="{{item._id}}">
+                <text class="more-icon">⋯</text>
+              </view>
+            </view>
+            <text class="event-date">{{item.dateStr}} · Day {{item.day}}</text>
+            <view class="event-footer">
+              <view class="event-photos">
+                <block wx:if="{{item.photos && item.photos.length > 0}}">
+                  <view class="mini-photo {{item.type}}-bg" wx:for="{{item.photos}}" wx:for-item="photo" wx:key="index" wx:if="{{index < 4}}">
+                    <image wx:if="{{photo.url || photo.fileId}}" src="{{photo.url || photo.fileId}}" mode="aspectFill" class="mini-photo-img" lazy-load />
+                    <text wx:else class="mini-emoji">📷</text>
+                  </view>
+                </block>
+              </view>
+              <view class="event-music">
+                <text class="music-icon">♪</text>
+                <text class="music-name">{{item.musicName}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="fab-btn" bindtap="showAddModal">
+    <text class="fab-icon">+</text>
+  </view>
+
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideAddModal">
+    <view class="modal-box" catchtap="preventBubble">
+      <view class="modal-header">
+        <text class="modal-title">新增事件</text>
+        <view class="modal-close" bindtap="hideAddModal">
+          <text class="close-icon">✕</text>
+        </view>
+      </view>
+
+      <scroll-view scroll-y class="modal-body">
+        <view class="form-group">
+          <text class="form-label">事件类型</text>
+          <view class="type-selector">
+            <view class="type-option {{newEvent.type === 'birthday' ? 'selected' : ''}}" bindtap="selectType" data-type="birthday">
+              <text class="type-emoji">🎂</text>
+              <text class="type-name">生日</text>
+            </view>
+            <view class="type-option {{newEvent.type === 'anniversary' ? 'selected' : ''}}" bindtap="selectType" data-type="anniversary">
+              <text class="type-emoji">💕</text>
+              <text class="type-name">纪念日</text>
+            </view>
+            <view class="type-option {{newEvent.type === 'daily' ? 'selected' : ''}}" bindtap="selectType" data-type="daily">
+              <text class="type-emoji">🌿</text>
+              <text class="type-name">日常</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">事件标题</text>
+          <input class="form-input" placeholder="给这个回忆取个名字" value="{{newEvent.title}}" bindinput="onInput" data-field="title" />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">日期</text>
+          <picker mode="date" value="{{newEvent.date}}" bindchange="onDateChange">
+            <view class="form-picker">
+              <text class="picker-text">{{newEvent.date || '选择日期'}}</text>
+              <text class="picker-arrow">›</text>
+            </view>
+          </picker>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">关联歌曲</text>
+          <input class="form-input" placeholder="歌曲名称（选填）" value="{{newEvent.music}}" bindinput="onInput" data-field="music" />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">文字记录</text>
+          <textarea class="form-textarea" placeholder="记录这个美好的瞬间..." value="{{newEvent.description}}" bindinput="onInput" data-field="description" maxlength="500" />
+          <text class="char-count">{{newEvent.description.length || 0}}/500</text>
+        </view>
+      </scroll-view>
+
+      <view class="modal-footer">
+        <view class="btn-cancel" bindtap="hideAddModal">
+          <text class="btn-text">取消</text>
+        </view>
+        <view class="btn-confirm" bindtap="confirmAdd">
+          <text class="btn-text">保存</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

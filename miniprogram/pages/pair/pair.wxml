@@ -1,0 +1,80 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-left" bindtap="goBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <text class="nav-title">情侣空间</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <scroll-view scroll-y class="pair-scroll" style="height: {{scrollHeight}}px;">
+    <view class="pair-body">
+      <view class="pair-header">
+        <text class="pair-emoji">💕</text>
+        <text class="pair-subtitle">与 TA 共同记录美好时光</text>
+      </view>
+
+      <view class="tab-bar">
+        <view class="tab-indicator" style="transform: translateX({{mode === 'invite' ? '0' : '100%'}})"></view>
+        <view class="tab-item {{mode === 'invite' ? 'active' : ''}}" bindtap="switchMode" data-mode="invite">
+          <text class="tab-text">邀请伴侣</text>
+        </view>
+        <view class="tab-item {{mode === 'join' ? 'active' : ''}}" bindtap="switchMode" data-mode="join">
+          <text class="tab-text">加入空间</text>
+        </view>
+      </view>
+
+      <view class="invite-panel" wx:if="{{mode === 'invite'}}">
+        <view class="invite-desc">
+          <text class="desc-text">生成邀请码，发送给你的伴侣</text>
+          <text class="desc-text">对方输入邀请码即可完成配对</text>
+        </view>
+
+        <view class="invite-code-box" wx:if="{{inviteCode}}">
+          <text class="code-label">你的邀请码</text>
+          <view class="code-display">
+            <text class="code-text" bindtap="copyCode">{{inviteCode}}</text>
+          </view>
+          <text class="code-tip">24小时内有效，点击可复制</text>
+        </view>
+
+        <view class="share-invite-btn" wx:if="{{inviteCode}}">
+          <button class="share-btn-inner" open-type="share">
+            <text class="btn-text">发送给伴侣</text>
+          </button>
+          <text class="share-tip">对方点击卡片即可自动填入邀请码</text>
+        </view>
+
+        <view class="generate-btn" bindtap="generateCode" wx:if="{{!inviteCode && !loading}}">
+          <text class="btn-text">生成邀请码</text>
+        </view>
+
+        <view class="loading-box" wx:if="{{loading}}">
+          <text class="loading-text">生成中...</text>
+        </view>
+      </view>
+
+      <view class="join-panel" wx:if="{{mode === 'join'}}">
+        <view class="join-desc">
+          <text class="desc-text">输入伴侣分享的邀请码</text>
+          <text class="desc-text">即可加入 TA 的情侣空间</text>
+        </view>
+
+        <view class="code-input-box">
+          <view class="code-inputs">
+            <input class="code-input" maxlength="6" value="{{inputCode}}" bindinput="onCodeInput" focus="{{inputFocus}}" placeholder="输入6位邀请码" />
+          </view>
+        </view>
+
+        <view class="join-btn {{inputCode.length === 6 ? '' : 'disabled'}}" bindtap="joinSpace">
+          <text class="btn-text">{{joining ? '加入中...' : '加入情侣空间'}}</text>
+        </view>
+      </view>
+
+      <view class="skip-section">
+        <text class="skip-text" bindtap="skipPair">暂时跳过，稍后设置</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,131 @@
+.mini-player {
+  background: rgba(26, 26, 46, 0.95);
+  border: 2rpx solid rgba(201, 169, 110, 0.15);
+  border-radius: 24rpx;
+  padding: 24rpx;
+  margin: 0 32rpx 32rpx;
+  backdrop-filter: blur(20px);
+}
+
+.mini-player.playing {
+  border-color: rgba(201, 169, 110, 0.3);
+  box-shadow: 0 0 30rpx rgba(201, 169, 110, 0.1);
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.player-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--coral), var(--rose));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-icon-wrap.rotating {
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.player-icon {
+  font-size: 28rpx;
+  color: #fff;
+}
+
+.player-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  overflow: hidden;
+}
+
+.player-title {
+  font-size: 28rpx;
+  color: #FFF8F0;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-artist {
+  font-size: 22rpx;
+  color: rgba(201, 169, 110, 0.6);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40rpx;
+  margin-bottom: 16rpx;
+}
+
+.control-btn {
+  padding: 12rpx;
+}
+
+.control-icon {
+  font-size: 32rpx;
+  color: rgba(201, 169, 110, 0.6);
+}
+
+.play-btn {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-icon {
+  font-size: 32rpx;
+  color: #0f1023;
+}
+
+.progress-wrap {
+  width: 100%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8rpx;
+  background: rgba(201, 169, 110, 0.2);
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gold);
+  border-radius: 4rpx;
+  transition: width 0.3s ease;
+}
+
+.time-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8rpx;
+}
+
+.time-text {
+  font-size: 20rpx;
+  color: rgba(201, 169, 110, 0.5);
+}

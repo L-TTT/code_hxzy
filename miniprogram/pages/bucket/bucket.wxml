@@ -1,0 +1,137 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="header-section" style="padding-top: {{statusBarHeight}}px;">
+    <view class="stats-bar">
+      <view class="stat-item">
+        <text class="stat-num">{{totalCount}}</text>
+        <text class="stat-label">全部</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-num">{{doneCount}}</text>
+        <text class="stat-label">已完成</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-num">{{pendingCount}}</text>
+        <text class="stat-label">待完成</text>
+      </view>
+    </view>
+
+    <view class="status-row">
+      <view class="status-chip {{activeFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
+      <view class="status-chip {{activeFilter === 'done' ? 'active' : ''}}" bindtap="setFilter" data-filter="done">已完成</view>
+      <view class="status-chip {{activeFilter === 'pending' ? 'active' : ''}}" bindtap="setFilter" data-filter="pending">待完成</view>
+    </view>
+
+    <view class="category-row">
+      <scroll-view scroll-x class="category-scroll">
+        <view class="category-tags">
+          <view class="category-tag {{activeCategory === 'all' ? 'active' : ''}}" bindtap="setCategory" data-category="all">全部分类</view>
+          <view class="category-tag {{activeCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="index" bindtap="setCategory" data-category="{{item}}">{{item}}</view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="sort-bar">
+      <text class="sort-label">排序</text>
+      <view class="sort-option {{sortBy === 'time' ? 'active' : ''}}" bindtap="setSort" data-sort="time">时间</view>
+      <view class="sort-option {{sortBy === 'category' ? 'active' : ''}}" bindtap="setSort" data-sort="category">分类</view>
+      <view class="sort-option {{sortBy === 'status' ? 'active' : ''}}" bindtap="setSort" data-sort="status">状态</view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="bucket-list" style="height: {{scrollHeight}}px;">
+    <view wx:if="{{loading}}" class="loading-state">
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view wx:elif="{{!paired}}" class="empty-state">
+      <text class="empty-title">尚未配对</text>
+      <text class="empty-desc">请先邀请伴侣加入情侣空间</text>
+      <view class="pair-btn" bindtap="goToPair">
+        <text class="pair-btn-text">去配对</text>
+      </view>
+    </view>
+
+    <view wx:elif="{{items.length === 0}}" class="empty-state">
+      <view class="empty-icon">
+        <view class="empty-circle"></view>
+        <view class="empty-line"></view>
+        <view class="empty-line short"></view>
+      </view>
+      <text class="empty-title">还没有心愿</text>
+      <text class="empty-desc">点击右下角 + 添加你们想一起做的事</text>
+    </view>
+
+    <view wx:else class="items-container">
+      <view class="bucket-item {{item.status === 'done' ? 'completed' : ''}}" wx:for="{{items}}" wx:key="_id">
+        <view class="item-check" bindtap="toggleComplete" data-id="{{item._id}}">
+          <view class="check-circle {{item.status === 'done' ? 'checked' : ''}}">
+            <view class="check-tick" wx:if="{{item.status === 'done'}}"></view>
+          </view>
+        </view>
+        <view class="item-body" bindtap="showDetail" data-id="{{item._id}}">
+          <view class="item-title-row">
+            <text class="item-title {{item.status === 'done' ? 'done-text' : ''}}">{{item.title}}</text>
+            <view class="item-category-tag">{{item.category}}</view>
+          </view>
+          <text class="item-desc" wx:if="{{item.description}}">{{item.description}}</text>
+          <view class="item-meta">
+            <text class="meta-time">{{item.timeText}}</text>
+            <text class="meta-status" wx:if="{{item.status === 'done'}}">已完成</text>
+          </view>
+        </view>
+        <view class="item-actions">
+          <view class="action-btn create-event" wx:if="{{item.status === 'done' && !item.linkedEventId}}" bindtap="createEventFromItem" data-item="{{item}}">
+            <text class="action-text">记</text>
+          </view>
+          <view class="action-btn delete-btn" bindtap="deleteItem" data-id="{{item._id}}">
+            <text class="action-text">×</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="fab-btn" bindtap="showAddModal">
+    <view class="fab-icon-box">
+      <view class="fab-plus-h"></view>
+      <view class="fab-plus-v"></view>
+    </view>
+    <text class="fab-text">新增心愿</text>
+  </view>
+
+  <view class="add-mask" wx:if="{{showAdd}}" bindtap="hideAddModal">
+    <view class="add-modal" catchtap="preventClose">
+      <view class="modal-header">
+        <text class="modal-title">{{editingId ? '编辑心愿' : '添加心愿'}}</text>
+        <view class="modal-close" bindtap="hideAddModal">
+          <text class="close-icon">✕</text>
+        </view>
+      </view>
+      <view class="modal-body" catchtap="preventClose">
+        <view class="form-group">
+          <text class="form-label">心愿内容</text>
+          <input class="form-input" placeholder="想一起做的事..." value="{{formTitle}}" bindinput="onFormTitleInput" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">详细描述（可选）</text>
+          <textarea class="form-textarea" placeholder="补充说明..." value="{{formDesc}}" bindinput="onFormDescInput" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">分类</text>
+          <view class="category-grid" catchtap="preventClose">
+            <view class="category-chip {{formCategory === item ? 'active' : ''}}" wx:for="{{categories}}" wx:key="index" bindtap="selectCategory" data-category="{{item}}">{{item}}</view>
+            <view class="category-chip add-custom" bindtap="showCustomCategory">
+              <text>+ 自定义</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="submit-btn" bindtap="submitItem">{{editingId ? '保存' : '添加'}}</button>
+      </view>
+    </view>
+  </view>
+</view>

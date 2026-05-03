@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "note-card": "/components/note-card/note-card",
+    "mini-player": "/components/mini-player/mini-player"
+  },
+  "navigationStyle": "custom"
+}

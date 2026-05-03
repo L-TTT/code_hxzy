@@ -46,5 +46,13 @@
     "ignore": [],
     "include": []
   },
-  "appid": "wx3d369e6a4877df74"
+  "appid": "wx3d369e6a4877df74",
+  "projectname": "HXZY",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudbaseRoot": "cloudbase/",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+  "miniprogramCloudBaseRoot": "miniprogramCloudBase/",
+  "miniprogramCloudBaseTemplateRoot": "miniprogramCloudBaseTemplate/",
+  "cloud": true,
+  "cloudenv": "toust-d9gu1e0km340d2d2f"
 }

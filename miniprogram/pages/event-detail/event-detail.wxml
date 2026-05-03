@@ -1,0 +1,130 @@
+<view class="page {{themeClass}}">
+  <image wx:if="{{themeClass === 'theme-custom' && customBgPath}}" src="{{customBgPath}}" class="custom-bg-overlay" mode="aspectFill"></image>
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-left" bindtap="goBack">
+      <text class="back-icon">‹</text>
+    </view>
+    <text class="nav-title">事件详情</text>
+    <view class="nav-right">
+      <view class="nav-action" bindtap="editEvent">
+        <text class="edit-icon">✎</text>
+      </view>
+      <view class="nav-action" bindtap="deleteEvent">
+        <text class="delete-icon">🗑</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="loading-state" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <scroll-view scroll-y show-scrollbar="{{false}}" class="detail-content" style="height: {{scrollHeight}}px;" wx:if="{{!loading}}">
+    <view class="detail-body">
+      <view class="event-header">
+        <view class="event-type-indicator type-{{event.type}}"></view>
+        <view class="event-title-section">
+          <text class="event-title">{{event.title || '未命名事件'}}</text>
+          <view class="event-meta">
+            <text class="type-tag type-{{event.type}}">{{typeEmoji}} {{eventTypeText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="date-badge">
+        <text class="date-icon">📅</text>
+        <text class="date-text">{{event.date || '未设置日期'}}</text>
+      </view>
+
+      <view class="section-divider">
+        <view class="divider-line"></view>
+        <text class="divider-text">文字记录</text>
+        <view class="divider-line"></view>
+      </view>
+
+      <view class="note-content" wx:if="{{event.description}}">
+        <view class="note-icon-section">
+          <view class="note-head type-{{event.type}}"></view>
+          <view class="note-stem type-{{event.type}}"></view>
+        </view>
+        <view class="note-text-box">
+          <text class="note-text">{{event.description}}</text>
+        </view>
+      </view>
+      <view class="empty-state" wx:else>
+        <text class="empty-icon">�</text>
+        <text class="empty-text">暂无描述</text>
+      </view>
+
+      <view class="section-divider">
+        <view class="divider-line"></view>
+        <text class="divider-text">照片记录</text>
+        <view class="divider-line"></view>
+      </view>
+
+      <view class="photos-section">
+        <block wx:if="{{event.photos && event.photos.length > 0}}">
+          <view class="photo-card" wx:for="{{event.photos}}" wx:key="index" bindtap="previewPhoto" data-index="{{index}}">
+            <image wx:if="{{item.url || item.fileId}}" src="{{item.url || item.fileId}}" mode="widthFix" class="photo-img" lazy-load />
+            <view wx:else class="photo-placeholder type-{{event.type}}-bg">
+              <text class="photo-emoji">📷</text>
+              <text class="photo-label">照片 {{index + 1}}</text>
+            </view>
+            <view class="photo-caption" wx:if="{{item.caption}}">
+              <text class="caption-text">{{item.caption}}</text>
+            </view>
+          </view>
+        </block>
+        <view class="empty-state" wx:else>
+          <text class="empty-icon">�</text>
+          <text class="empty-text">暂无照片</text>
+        </view>
+      </view>
+
+      <view class="section-divider">
+        <view class="divider-line"></view>
+        <text class="divider-text">地点</text>
+        <view class="divider-line"></view>
+      </view>
+
+      <view class="info-tags" wx:if="{{event.location}}">
+        <view class="info-tag">
+          <text class="tag-icon">📍</text>
+          <text class="tag-text">{{event.location}}</text>
+        </view>
+      </view>
+      <view class="empty-state" wx:else>
+        <text class="empty-icon">📍</text>
+        <text class="empty-text">暂无地点</text>
+      </view>
+
+      <view class="section-divider">
+        <view class="divider-line"></view>
+        <text class="divider-text">音乐</text>
+        <view class="divider-line"></view>
+      </view>
+
+      <view class="music-player" wx:if="{{event.music && (event.music.title || event.music.url || event.music.src)}}">
+        <view class="player-left">
+          <text class="player-icon">♪</text>
+          <view class="player-info">
+            <text class="player-title">{{event.music.title || '未命名音乐'}}</text>
+            <text class="player-artist" wx:if="{{event.music.artist}}">{{event.music.artist}}</text>
+          </view>
+        </view>
+        <view class="player-right">
+          <view class="progress-bar">
+            <view class="progress-fill type-{{event.type}}" style="width: {{progress}}%"></view>
+          </view>
+          <text class="play-btn" bindtap="togglePlay">{{isPlaying ? '⏸' : '▶'}}</text>
+        </view>
+      </view>
+      <view class="empty-state" wx:else>
+        <text class="empty-icon">🎵</text>
+        <text class="empty-text">暂无音乐</text>
+      </view>
+
+      <view class="detail-bottom"></view>
+    </view>
+  </scroll-view>
+</view>

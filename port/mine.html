@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑管理页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ink': '#0f1023',
+                        'ink-light': '#1a1a2e',
+                        'ink-mid': '#252540',
+                        'gold': '#C9A96E',
+                        'gold-light': '#d4b97a',
+                        'cream': '#FFF8F0',
+                        'rose': '#B76E79',
+                        'coral': '#FF6B6B',
+                        'lavender': '#9B8EC1',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0f1023; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; width: 430px; height: 932px; overflow: hidden; }
+        .timeline-line { width: 2px; background: linear-gradient(180deg, rgba(201,169,110,0.4), rgba(201,169,110,0.1)); }
+        .event-card {
+            background: linear-gradient(135deg, rgba(26,26,46,0.8), rgba(37,37,64,0.6));
+            border: 1px solid rgba(201,169,110,0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
+        }
+        .event-card:hover { border-color: rgba(201,169,110,0.25); }
+        .tag-birthday { background: rgba(255,107,107,0.15); color: #FF6B6B; border: 1px solid rgba(255,107,107,0.2); }
+        .tag-anniversary { background: rgba(183,110,121,0.15); color: #B76E79; border: 1px solid rgba(183,110,121,0.2); }
+        .tag-daily { background: rgba(155,142,193,0.15); color: #9B8EC1; border: 1px solid rgba(155,142,193,0.2); }
+        .dot-birthday { background: #FF6B6B; box-shadow: 0 0 8px rgba(255,107,107,0.4); }
+        .dot-anniversary { background: #B76E79; box-shadow: 0 0 8px rgba(183,110,121,0.4); }
+        .dot-daily { background: #9B8EC1; box-shadow: 0 0 8px rgba(155,142,193,0.4); }
+        .scroll-area::-webkit-scrollbar { width: 0; }
+    </style>
+</head>
+<body>
+    <div class="flex flex-col h-full">
+        <div class="flex items-center justify-between px-4 pt-12 pb-3 bg-ink/80">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-gold flex items-center justify-center">
+                    <svg class="w-4 h-4 text-ink" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                </div>
+                <span class="text-gold text-sm font-semibold tracking-wider" style="font-family: Georgia, serif;">回忆管理</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="px-3 py-1.5 bg-gold/10 border border-gold/20 rounded-full text-gold text-xs flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                    新增事件
+                </button>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 px-4 py-3 bg-ink/60 border-b border-gold/10">
+            <div class="flex items-center gap-1.5 bg-gold/10 border border-gold/20 rounded-full px-3 py-1.5 text-gold text-xs">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5-3L16.5 18m0 0L12 13.5m4.5 4.5V6"/></svg>
+                全部事件
+            </div>
+            <div class="flex items-center gap-1.5 bg-ink-light border border-gold/10 rounded-full px-3 py-1.5 text-cream/50 text-xs">
+                <span class="w-2 h-2 rounded-full dot-birthday"></span>
+                生日
+            </div>
+            <div class="flex items-center gap-1.5 bg-ink-light border border-gold/10 rounded-full px-3 py-1.5 text-cream/50 text-xs">
+                <span class="w-2 h-2 rounded-full dot-anniversary"></span>
+                纪念日
+            </div>
+            <div class="flex items-center gap-1.5 bg-ink-light border border-gold/10 rounded-full px-3 py-1.5 text-cream/50 text-xs">
+                <span class="w-2 h-2 rounded-full dot-daily"></span>
+                日常
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto scroll-area px-4 py-4">
+            <div class="relative">
+                <div class="absolute left-[7px] top-0 bottom-0 timeline-line"></div>
+
+                <div class="relative flex gap-4 mb-5">
+                    <div class="relative z-10 mt-4 w-4 h-4 rounded-full border-2 border-gold bg-ink flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <p class="text-gold/60 text-xs mb-2 tracking-widest" style="font-family: Georgia, serif;">2026</p>
+                        <div class="event-card rounded-xl p-3.5">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="tag-birthday text-[10px] px-2 py-0.5 rounded-full">🎂 生日</span>
+                                    </div>
+                                    <h3 class="text-cream text-sm font-semibold" style="font-family: Georgia, serif;">苏念念 · 24岁生日</h3>
+                                </div>
+                                <button class="p-1 text-gold/30 hover:text-gold">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"/></svg>
+                                </button>
+                            </div>
+                            <p class="text-cream/50 text-xs mb-2.5">2026.03.15 · Day 760</p>
+                            <div class="flex items-center gap-3">
+                                <div class="flex gap-1.5">
+                                    <div class="w-10 h-10 rounded-lg bg-coral/20 flex items-center justify-center"><span class="text-xs">🕯️</span></div>
+                                    <div class="w-10 h-10 rounded-lg bg-coral/20 flex items-center justify-center"><span class="text-xs">🎂</span></div>
+                                </div>
+                                <div class="flex items-center gap-1 ml-auto text-cream/30">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                    <span class="text-[10px]">生日快乐歌</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex gap-4 mb-5">
+                    <div class="relative z-10 mt-4 w-4 h-4 rounded-full dot-anniversary bg-ink flex-shrink-0" style="background: #B76E79;"></div>
+                    <div class="flex-1">
+                        <p class="text-gold/60 text-xs mb-2 tracking-widest" style="font-family: Georgia, serif;">2025</p>
+                        <div class="event-card rounded-xl p-3.5">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="tag-anniversary text-[10px] px-2 py-0.5 rounded-full">💕 纪念日</span>
+                                    </div>
+                                    <h3 class="text-cream text-sm font-semibold" style="font-family: Georgia, serif;">一周年纪念 · 携手前行</h3>
+                                </div>
+                                <button class="p-1 text-gold/30 hover:text-gold">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"/></svg>
+                                </button>
+                            </div>
+                            <p class="text-cream/50 text-xs mb-2.5">2025.02.14 · Day 365</p>
+                            <div class="flex items-center gap-3">
+                                <div class="flex gap-1.5">
+                                    <div class="w-10 h-10 rounded-lg bg-rose/20 flex items-center justify-center"><span class="text-xs">💕</span></div>
+                                    <div class="w-10 h-10 rounded-lg bg-rose/20 flex items-center justify-center"><span class="text-xs">🌹</span></div>
+                                    <div class="w-10 h-10 rounded-lg bg-rose/20 flex items-center justify-center"><span class="text-xs">🍽️</span></div>
+                                    <div class="w-10 h-10 rounded-lg bg-rose/20 flex items-center justify-center"><span class="text-xs">✉️</span></div>
+                                </div>
+                                <div class="flex items-center gap-1 ml-auto text-cream/30">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                    <span class="text-[10px]">告白气球</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex gap-4 mb-5">
+                    <div class="relative z-10 mt-4 w-4 h-4 rounded-full dot-daily bg-ink flex-shrink-0" style="background: #9B8EC1;"></div>
+                    <div class="flex-1">
+                        <div class="event-card rounded-xl p-3.5">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="tag-daily text-[10px] px-2 py-0.5 rounded-full">🌿 日常</span>
+                                    </div>
+                                    <h3 class="text-cream text-sm font-semibold" style="font-family: Georgia, serif;">周末午后 · 城市公园散步</h3>
+                                </div>
+                                <button class="p-1 text-gold/30 hover:text-gold">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"/></svg>
+                                </button>
+                            </div>
+                            <p class="text-cream/50 text-xs mb-2.5">2024.06.22 · Day 128</p>
+                            <div class="flex items-center gap-3">
+                                <div class="flex gap-1.5">
+                                    <div class="w-10 h-10 rounded-lg bg-lavender/20 flex items-center justify-center"><span class="text-xs">🌸</span></div>
+                                </div>
+                                <div class="flex items-center gap-1 ml-auto text-cream/30">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                    <span class="text-[10px]">晴天</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex gap-4 mb-5">
+                    <div class="relative z-10 mt-4 w-4 h-4 rounded-full bg-ink flex-shrink-0" style="background: #C9A96E;"></div>
+                    <div class="flex-1">
+                        <div class="event-card rounded-xl p-3.5">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="tag-anniversary text-[10px] px-2 py-0.5 rounded-full">💕 纪念日</span>
+                                    </div>
+                                    <h3 class="text-cream text-sm font-semibold" style="font-family: Georgia, serif;">初遇 · 咖啡馆的第一次对视</h3>
+                                </div>
+                                <button class="p-1 text-gold/30 hover:text-gold">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"/></svg>
+                                </button>
+                            </div>
+                            <p class="text-cream/50 text-xs mb-2.5">2024.02.14 · Day 1</p>
+                            <div class="flex items-center gap-3">
+                                <div class="flex gap-1.5">
+                                    <div class="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center"><span class="text-xs">☕</span></div>
+                                    <div class="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center"><span class="text-xs">👀</span></div>
+                                    <div class="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center"><span class="text-xs">💐</span></div>
+                                </div>
+                                <div class="flex items-center gap-1 ml-auto text-cream/30">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                    <span class="text-[10px]">告白气球</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex gap-4">
+                    <div class="relative z-10 mt-4 w-4 h-4 rounded-full bg-ink flex-shrink-0" style="background: #9B8EC1;"></div>
+                    <div class="flex-1">
+                        <div class="event-card rounded-xl p-3.5">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="tag-daily text-[10px] px-2 py-0.5 rounded-full">🌿 日常</span>
+                                    </div>
+                                    <h3 class="text-cream text-sm font-semibold" style="font-family: Georgia, serif;">一起看的第一场电影</h3>
+                                </div>
+                                <button class="p-1 text-gold/30 hover:text-gold">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"/></svg>
+                                </button>
+                            </div>
+                            <p class="text-cream/50 text-xs mb-2.5">2024.03.01 · Day 16</p>
+                            <div class="flex items-center gap-3">
+                                <div class="flex gap-1.5">
+                                    <div class="w-10 h-10 rounded-lg bg-lavender/20 flex items-center justify-center"><span class="text-xs">🎬</span></div>
+                                    <div class="w-10 h-10 rounded-lg bg-lavender/20 flex items-center justify-center"><span class="text-xs">🍿</span></div>
+                                </div>
+                                <div class="flex items-center gap-1 ml-auto text-cream/30">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                    <span class="text-[10px]">小幸运</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between px-4 py-3 bg-ink/80 border-t border-gold/10">
+            <div class="flex items-center gap-4">
+                <div class="flex flex-col items-center text-cream/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                    <span class="text-[10px] mt-0.5">画册</span>
+                </div>
+                <div class="flex flex-col items-center text-gold">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span class="text-[10px] mt-0.5">管理</span>
+                    <div class="w-1 h-1 rounded-full bg-gold mt-0.5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
