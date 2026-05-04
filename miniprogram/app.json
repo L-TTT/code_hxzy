@@ -1,4 +1,7 @@
 {
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
   "pages": [
     "pages/login/login",
     "pages/pair/pair",
